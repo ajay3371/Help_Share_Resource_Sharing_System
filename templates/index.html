@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Wastage App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* CSS styles for centering the button */
+    .btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust margin as needed */
+    }
+
+    .btn {
+    width: 200%; /* Make the button fill the width of its parent */
+    max-width: 400px; /* Set a max-width to prevent it from becoming too wide */
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="header-text">Reuse Your Village Resources</h1>
+        <p>Donate essential items and help those in need!</p>
+      </header>
+
+    
+    {% if username %}
+    <div class="container">
+
+        <div class="grid-container">
+            <a href="/food" class="grid-item food">
+              Food
+            </a>
+            <a href="/e-waste" class="grid-item e-waste">
+              Old Electronics
+            </a>
+            <a href="/municipal" class="grid-item municipal">
+              Municipal Services
+            </a>
+            <a href="/health" class="grid-item health">
+              Healthcare
+            </a>
+            <a href="/services" class="grid-item services">
+              General Services
+            </a>
+            <a href="/events" class="grid-item events">
+              Events & Activities
+            </a>
+          </div>
+
+
+          <div class="profile">
+            <div class="profile-image">
+              <!-- Use an image tag with the user's profile image URL -->
+              <img src="/static/profile.jpg" alt="Profile Image">
+            </div>
+            <div class="profile-info">
+              <!-- Display the username -->
+              <h3>Welcome, {{ username }}!</h3>
+              <!-- Logout button -->
+              <a href="/logout" class="btn">Logout</a>
+            </div>
+          </div>
+          
+        <h2>Available Food Posts:</h2>
+        {% if food_posts %}
+        <div class="food-posts">
+            {% for post in food_posts %}
+            <div class="card">
+                <h3>{{ post.food_name }}</h3>
+                <p><strong>Posted by:</strong> {{ post.username }}</p>
+                <p><strong>Address:</strong> {{ post.address }}</p>
+                <p>{{ post.details }}</p>
+                {% if post.image_url %}
+                <img src="{{ post.image_url }}" alt="Food Image" class="food-image">
+                {% endif %}
+                <form action="/claim_food" method="POST">
+                    <input type="hidden" name="food_post_index" value="{{ loop.index0 }}">
+                    <input type="submit" value="Claim Food" class="btn-claim">
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No food posts available.</p>
+        {% endif %}
+        <hr>
+        <hr><center>
+            <div class="btn-container">
+                <a href="/post_food" class="btn">Post Food</a>
+              </div></center>
+    </div>
+    {% else %}
+    <div class="container">
+        <h1>Food Wastage App</h1>
+        <p>Please <a href="/login">login</a> to view available food posts.</p>
+    </div>
+    {% endif %}
+</body>
+</html>

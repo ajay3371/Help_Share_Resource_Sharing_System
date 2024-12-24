@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Wastage App</title>
+</head>
+<body>    {% if username %}
+    <h1>Welcome, {{ username }}!</h1>
+    <a href="/logout">Logout</a>
+    <h1>Food Wastage App</h1>
+    <a href="/post_food">Post Food</a>
+
+    
+    {% for post in food_posts %}
+    <h2>Available Food Posts:</h2>
+    <div>
+        <h3>{{ post.food_name }}</h3>
+        <p><strong>Posted by:</strong> {{ post.username }}</p>
+        <p><strong>Address:</strong> {{ post.address }}</p>
+        <p>{{ post.details }}</p>
+        <form action="/obtain_food" method="POST">
+            <input type="hidden" name="food_post_index" value="{{ loop.index0 }}">
+            <input type="submit" value="Obtain">
+        </form>
+    </div>
+    {% endfor %}
+    <hr>
+    {% else %}
+    <h1>Food Wastage App</h1>
+    <p>Please <a href="/login">login</a> to view available food posts.</p>
+    {% endif %}
+
+</body>
+</html>
